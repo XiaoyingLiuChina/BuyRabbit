@@ -6,8 +6,9 @@ import store from './store'
 import 'normalize.css'
 // 项目公共样式
 import '@/assets/styles/common.less'
-
+import ui from './components/library'
 const app = createApp(App)
 app.use(store)
 app.use(router)
+app.use(ui)
 app.mount('#app')
