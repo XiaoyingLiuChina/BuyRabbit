@@ -31,7 +31,7 @@
     <li><a href="#">孕婴</a></li>
     <li><a href="#">服装</a></li>
     <li><a href="#">杂货</a></li> -->
-    <li v-for="item in list" :key="item.id" @mouseenter="show(item)" @mouseleave="hide(item)">
+    <li v-for="item in list" :key="item.id" @mousemove="show(item)" @mouseleave="hide(item)">
       <RouterLink :to="`/category/${item.id}`" @click="hide(item)">{{ item.name }}</RouterLink>
       <div class="layer" :class="{ open: item.open }">
         <ul>
@@ -89,6 +89,7 @@ export default {
     &:hover {
       > a {
         color: @appColor;
+        cursor: pointer;
         border-bottom: 1px solid @appColor;
       }
       //   > .layer {
