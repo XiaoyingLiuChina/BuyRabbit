@@ -16,6 +16,7 @@
         </div>
         <div class="spec">
           <GoodsName :goods="goods" />
+          <GoodsSku :goods="goods" />
         </div>
       </div>
       <!-- 商品推荐 -->
@@ -36,6 +37,7 @@
 </template>
 
 <script>
+import GoodsSku from './components/goods-sku.vue'
 import GoodsSales from './components/goods-sales'
 import GoodsName from './components/goods-name'
 import GoodsImage from './components/goods-image.vue'
@@ -45,7 +47,7 @@ import { findGoods } from '@/api/product'
 import { useRoute } from 'vue-router'
 export default {
   name: 'XtxGoodsPage',
-  components: { GoodsRelevant, GoodsImage, GoodsSales, GoodsName },
+  components: { GoodsRelevant, GoodsImage, GoodsSales, GoodsName, GoodsSku },
   setup() {
     const goods = useGoods()
     // provide('goods', goods)
