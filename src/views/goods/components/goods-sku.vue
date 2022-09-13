@@ -12,16 +12,26 @@
   </div>
 </template>
 <script>
+import getPowerSet from '@/vender/power-set'
 export default {
   name: 'GoodsSku',
   props: {
     goods: {
       type: Object,
       default: () => ({ specs: [], skus: [] })
+    },
+    skuId: {
+      type: String,
+      default: ''
     }
   },
-  setup(props) {
+  setup(props, { emit }) {
+    const pathMap = getPathMap(props.goods.skus)
+    initSelectedStatus(props.goods, props.skuId)
+    // 组件初始化更新禁用状态
+    updateDisabledStatus(props.goods.specs, pathMap)
     const clickSpecs = (item, val) => {
+      if (val.disabled) return false
       // 1. 选中与取消选中逻辑
       if (val.selected) {
         val.selected = false
@@ -31,8 +41,88 @@ export default {
         })
         val.selected = true
       }
+      //   更新禁用状态
+      updateDisabledStatus(props.goods.specs, pathMap)
+      const selectedArr = getSelectedArr(props.goods.specs).filter((v) => v)
+      if (selectedArr.length === props.goods.specs.length) {
+        const skuIds = pathMap[selectedArr.join(spliter)]
+        const sku = props.goods.skus.find((sku) => sku.id === skuIds[0])
+        emit('change', {
+          skuId: sku.id,
+          price: sku.price,
+          oldPrice: sku.inventory,
+          // 计算数组元素相加后的总和
+          specsText: sku.specs.reduce((p, n) => `${p} ${n.name}：${n.valueName}`, '').replace(' ', '')
+        })
+      } else {
+        emit('change', {})
+      }
     }
     return { clickSpecs }
+  }
+}
+const spliter = '★'
+// 根据skus数据得到路径字典对象
+const getPathMap = (skus) => {
+  const pathMap = {}
+  skus.forEach((sku) => {
+    // 1. 过滤出有库存有效的sku
+    if (sku.inventory) {
+      // 2. 得到sku属性值数组
+      const specs = sku.specs.map((spec) => spec.valueName)
+      // 3. 得到sku属性值数组的子集
+      const powerSet = getPowerSet(specs)
+      // 4. 设置给路径字典对象
+      powerSet.forEach((set) => {
+        const key = set.join(spliter)
+        if (pathMap[key]) {
+          // 已经有key往数组追加
+          pathMap[key].push(sku.id)
+        } else {
+          // 没有key设置一个数组
+          pathMap[key] = [sku.id]
+        }
+      })
+    }
+  })
+  return pathMap
+}
+
+// 得到当前选中规格集合
+const getSelectedArr = (specs) => {
+  const selectedArr = []
+  specs.forEach((spec) => {
+    const selectedVal = spec.values.find((val) => val.selected)
+    selectedArr.push(selectedVal ? selectedVal.name : undefined)
+  })
+  return selectedArr
+}
+// 更新按钮的禁用状态
+const updateDisabledStatus = (specs, pathMap) => {
+  specs.forEach((spec, i) => {
+    const selectedArr = getSelectedArr(specs)
+    spec.values.forEach((val) => {
+      // 已经选中的按钮不用判断
+      if (val.name === selectedArr[i]) return false
+      // 未选中的替换对应的值
+      selectedArr[i] = val.name
+      // 过滤无效值得到key
+      const key = selectedArr.filter((v) => v).join(spliter)
+      // 设置禁用状态
+      val.disabled = !pathMap[key]
+    })
+  })
+}
+// 初始化选中状态
+const initSelectedStatus = (goods, skuId) => {
+  const sku = goods.skus.find((sku) => sku.id === skuId)
+  if (sku) {
+    goods.specs.forEach((spec, i) => {
+      const value = sku.specs[i].valueName
+      spec.values.forEach((val) => {
+        val.selected = val.name === value
+      })
+    })
   }
 }
 </script>
