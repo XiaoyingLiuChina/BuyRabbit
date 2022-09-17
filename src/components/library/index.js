@@ -5,6 +5,7 @@
 // import XtxBreadItem from './xtx-bread-item.vue'
 // import defaultImg from '@/assets/images/200.png'
 // 指令
+import Message from './Message'
 const defineDirective = (app) => {
   // 图片懒加载指令
   app.directive('lazyload', {
@@ -44,6 +45,7 @@ export default {
 
     // 定义指令
     defineDirective(app)
+    app.config.globalProperties.$message = Message
   }
 }
 
