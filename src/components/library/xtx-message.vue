@@ -1,6 +1,6 @@
 <template>
   <transition name="down">
-    <div class="xtx-message" :style="style" v-show="show">
+    <div class="xtx-message" :style="style[type]" v-show="visible">
       <i class="iconfont" :class="[style[type].icon]"></i>
       <span class="text">{{ text }}</span>
     </div>
