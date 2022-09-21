@@ -26,21 +26,15 @@
           placeholder="搜一搜"
         >
       </div>
-      <div class="cart">
-        <a
-          class="curr"
-          href="#"
-        >
-          <i class="iconfont icon-cart"></i><em>2</em>
-        </a>
-      </div>
+     <app-header-cart></app-header-cart>
     </div>
   </header>
 </template>
 <script>
+import AppHeaderCart from './app-header-cart.vue'
 import appHeaderNav from './app-header-nav.vue'
 export default {
-  components: { appHeaderNav },
+  components: { appHeaderNav, AppHeaderCart },
   name: 'AppHeader'
 }
 </script>

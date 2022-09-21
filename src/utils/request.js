@@ -5,8 +5,9 @@ import router from '@/router'
 // 封装一个请求工具
 
 // 导出基准地址
+// https://apipc-xiaotuxian-front.itheima.net/
 // http://pcapi-xiaotuxian-front-devtest.itheima.net/
-export const baseURL = 'https://apipc-xiaotuxian-front.itheima.net/'
+export const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net/'
 const instance = axios.create({
   baseURL,
   timeout: 5000

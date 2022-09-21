@@ -50,7 +50,8 @@ export default {
         emit('change', {
           skuId: sku.id,
           price: sku.price,
-          oldPrice: sku.inventory,
+          oldPrice: sku.oldPrice,
+          inventory: sku.inventory,
           // 计算数组元素相加后的总和
           specsText: sku.specs.reduce((p, n) => `${p} ${n.name}：${n.valueName}`, '').replace(' ', '')
         })

@@ -2,9 +2,9 @@
   <div class="xtx-numbox">
     <div class="label">数量</div>
     <div class="numbox">
-      <a href="javascript:;">-</a>
-      <input type="text" readonly value="1" />
-      <a href="javascript:;">+</a>
+      <a href="javascript:;" @click="changeNum(-1)">-</a>
+      <input type="text" readonly :value="modelValue" />
+      <a href="javascript:;"  @click="changeNum(1)">+</a>
     </div>
   </div>
 </template>
@@ -38,7 +38,7 @@ export default {
       num.value = newValue
       emit('change', newValue)
     }
-    return { num, changeNum }
+    return { changeNum }
   }
 }
 </script>

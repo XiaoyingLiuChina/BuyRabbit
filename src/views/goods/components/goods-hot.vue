@@ -35,7 +35,7 @@ export default {
         item.tag = item.desc
         return item
       })
-      console.log(goodsList.value)
+    //   console.log(goodsList.value)
     })
     return { title, goodsList }
   }
